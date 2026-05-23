@@ -1,6 +1,11 @@
 # --- Stage 1: Build Astro ---
 FROM node:22-alpine AS frontend-builder
 WORKDIR /app
+
+# Build argument for the API URL
+ARG PUBLIC_API_URL
+ENV PUBLIC_API_URL=$PUBLIC_API_URL
+
 # Copy root package files
 COPY package*.json ./
 RUN npm install
@@ -38,6 +43,12 @@ EXPOSE 3000
 
 # Start the Hono server
 WORKDIR /app/api
-# We set PORT to 3000 to match the EXPOSE and Hono's default
+
+# Production defaults
 ENV PORT=3000
+ENV NODE_ENV=production
+ENV JWT_SECRET=ash-and-fire-change-me
+ENV DATABASE_URL=file:local.db
+ENV DATABASE_AUTH_TOKEN=
+
 CMD ["npm", "run", "start"]
