@@ -43,7 +43,7 @@ WORKDIR /app/api
 # Production defaults
 ENV PORT=3000
 ENV NODE_ENV=production
-ENV JWT_SECRET=ash-and-fire-change-me
+ENV JWT_SECRET=ash-and-fire-default-secret-change-me-in-production
 ENV DATABASE_URL=file:local.db
 ENV DATABASE_AUTH_TOKEN=
 

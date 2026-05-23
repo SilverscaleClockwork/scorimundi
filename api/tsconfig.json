@@ -8,7 +8,9 @@
     "skipLibCheck": true,
     "lib": ["ESNext"],
     "allowImportingTsExtensions": false,
-    "noEmit": false
+    "noEmit": false,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
   },
   "include": ["src/**/*"]
 }
