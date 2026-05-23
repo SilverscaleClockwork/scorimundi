@@ -1,6 +1,5 @@
 import { createSignal } from 'solid-js';
-
-const API_URL = import.meta.env.PUBLIC_API_URL || 'http://localhost:3001';
+import { client } from '../../lib/api';
 
 export default () => {
     const [username, setUsername] = createSignal('');
@@ -24,19 +23,18 @@ export default () => {
         setLoading(true);
         
         try {
-            const response = await fetch(`${API_URL}/auth/register`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
+            const res = await client.auth.register.$post({
+                json: { 
                     username: username(), 
                     email: email(), 
                     password: password() 
-                }),
+                }
             });
 
-            const data = await response.json();
+            const data = await res.json();
 
-            if (!response.ok) {
+            if (!res.ok) {
+                // @ts-ignore
                 throw new Error(data.error || 'Registration failed');
             }
 
