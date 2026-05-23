@@ -40,5 +40,5 @@ ENV JWT_SECRET=ash-and-fire-default-secret-change-me-in-production
 ENV DATABASE_URL=file:local.db
 ENV DATABASE_AUTH_TOKEN=
 
-# Start the unified server using Bun, running migrations first
-CMD ["sh", "-c", "bun run db:migrate && bun run start"]
+# Start the unified server using Bun, running migrations and seeding first
+CMD ["sh", "-c", "bun run db:migrate && bun run db:seed && bun run start"]
