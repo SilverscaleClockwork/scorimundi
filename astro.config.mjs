@@ -8,7 +8,7 @@ export default defineConfig({
     integrations: [solidJs()],
     server: {
         proxy: {
-            '/api': 'http://localhost:3001'
+            '/api': process.env.PUBLIC_API_URL || 'http://localhost:3001'
         }
     }
 });

@@ -2,10 +2,6 @@
 FROM node:22-alpine AS frontend-builder
 WORKDIR /app
 
-# Build argument for the API URL
-ARG PUBLIC_API_URL
-ENV PUBLIC_API_URL=$PUBLIC_API_URL
-
 # Copy root package files
 COPY package*.json ./
 RUN npm install
