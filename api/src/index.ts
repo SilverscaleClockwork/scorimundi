@@ -23,6 +23,23 @@ const app = new Hono()
 const api = new Hono()
 
 const JWT_SECRET = process.env.JWT_SECRET || 'ash-and-fire-secret-key-123'
+const BUNNY_SECRET = process.env.BUNNY_SECRET
+
+// --- Global CDN Security ---
+if (BUNNY_SECRET) {
+  app.use('*', async (c, next) => {
+    const incomingSecret = c.req.header('X-Bunny-Secret')
+    if (incomingSecret !== BUNNY_SECRET) {
+      logger.warn({ 
+        url: c.req.url,
+        method: c.req.method,
+        ip: c.req.header('x-forwarded-for') 
+      }, 'Global access denied: Invalid or missing X-Bunny-Secret header')
+      return c.text('Forbidden: Direct access is restricted', 403)
+    }
+    await next()
+  })
+}
 
 // --- Middleware ---
 api.use('*', async (c, next) => {
