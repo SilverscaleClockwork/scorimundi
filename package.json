@@ -9,12 +9,12 @@
     "node": ">=22.12.0"
   },
   "scripts": {
-    "dev:astro": "astro dev",
-    "dev:api": "cd api && npm run dev",
-    "dev": "concurrently \"npm run dev:astro\" \"npm run dev:api\" --kill-others --prefix-colors \"cyan,orange\"",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro"
+    "dev:astro": "bun x astro dev",
+    "dev:api": "cd api && bun run dev",
+    "dev": "concurrently \"bun run dev:astro\" \"bun run dev:api\" --kill-others --prefix-colors \"cyan,orange\"",
+    "build": "bun x astro build",
+    "preview": "bun x astro preview",
+    "astro": "bun x astro"
   },
   "dependencies": {
     "@astrojs/solid-js": "^6.0.1",
