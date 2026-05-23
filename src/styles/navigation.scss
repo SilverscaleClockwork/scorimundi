@@ -16,5 +16,40 @@ nav {
         .nav-spacer {
             flex-grow: 1;
         }
+
+        .user-display {
+            display: flex;
+            align-items: center;
+            padding: 0 1rem;
+
+            .username {
+                font-size: 0.8rem;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                color: var(--primary-color);
+            }
+        }
+
+        .nav-btn-logout {
+            background: none;
+            border: 1px solid var(--border-color);
+            color: #888;
+            font-family: inherit;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin: 0.6rem 0;
+
+            &:hover {
+                color: var(--base-color);
+                border-color: var(--color-blaze);
+                background: rgba(214, 39, 19, 0.1);
+            }
+        }
         }
         }

@@ -1,10 +1,13 @@
 ---
 import DefaultLayout from "../layouts/DefaultLayout.astro";
 import LoginForm from "../solid/auth/LoginForm";
+
+const email = Astro.url.searchParams.get('email') || '';
+const registered = Astro.url.searchParams.get('registered') === 'true';
 ---
 
 <DefaultLayout title="Login - Scorimundi">
     <div class="auth-container">
-        <LoginForm client:load />
+        <LoginForm client:load email={email} registered={registered} />
     </div>
 </DefaultLayout>

@@ -4,7 +4,8 @@ import type { SetStoreFunction } from "solid-js/store";
 
 export default (props: {
     health: HealthStructure,
-    setHealth: SetStoreFunction<HealthStructure>
+    setHealth: SetStoreFunction<HealthStructure>,
+    onUpdate?: (health: HealthStructure) => void
 }) => {
     const [isHydrated, setIsHydrated] = createSignal(false);
 
@@ -45,7 +46,9 @@ export default (props: {
             ref: (element: HTMLDivElement) => { el = element; },
             onInput,
             onBlur: () => {
-                if (el) el.textContent = String(props.health[key]);
+                const value = String(props.health[key]);
+                if (el) el.textContent = value;
+                props.onUpdate?.(props.health);
             }
         };
     };

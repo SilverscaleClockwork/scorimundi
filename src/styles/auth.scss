@@ -43,6 +43,57 @@
     }
 }
 
+.auth-options {
+    text-align: left;
+    margin-bottom: 1.5rem;
+
+    .checkbox-label {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+        font-size: 0.9rem;
+        color: var(--base-color);
+        user-select: none;
+
+        input[type="checkbox"] {
+            appearance: none;
+            width: 1.2rem;
+            height: 1.2rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background: var(--color-nocturne);
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s ease;
+
+            &:checked {
+                background: var(--color-flare);
+                border-color: var(--color-flare);
+
+                &::after {
+                    content: '✓';
+                    position: absolute;
+                    inset: 0;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: var(--color-nocturne);
+                    font-weight: bold;
+                    font-size: 0.8rem;
+                }
+            }
+        }
+    }
+
+    .gdpr-notice {
+        margin: 0.3rem 0 0 1.7rem;
+        font-size: 0.7rem;
+        color: #666;
+        line-height: 1.2;
+    }
+}
+
 .auth-btn {
     width: 100%;
     margin-top: 1rem;

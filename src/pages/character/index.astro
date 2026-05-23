@@ -1,0 +1,18 @@
+---
+import DefaultLayout from "../../layouts/DefaultLayout.astro";
+import CharacterList from "../../solid/character/CharacterList";
+---
+
+<DefaultLayout title="Your Heroes - Scorimundi">
+    <div class="list-page-wrapper">
+        <CharacterList client:load />
+    </div>
+</DefaultLayout>
+
+<style lang="scss">
+    .list-page-wrapper {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 4rem 2rem;
+    }
+</style>

@@ -1,22 +1,15 @@
 import type { Ability, AbilityKey } from "@lib/global_types";
 import { formatModifier, calculateAbilityMod } from "@lib/character_utils";
-import { For } from "solid-js";
+import { For, Show } from "solid-js";
 import type { SetStoreFunction } from "solid-js/store";
 
 export default (props: {
     abilities: Record<AbilityKey, Ability>,
     setAbilities: SetStoreFunction<Record<AbilityKey, Ability>>,
     proficiencyBonus: number,
+    isEditing?: boolean,
+    onAbilityChange?: (key: AbilityKey, score: number, save: boolean) => void,
 }) => {
-    const headings: Record<AbilityKey, string> = {
-        str: 'Strength',
-        dex: 'Dexterity',
-        con: 'Constitution',
-        int: 'Intelligence',
-        wis: 'Wisdom',
-        cha: 'Charisma',
-    };
-
     return (
         <div class="card ability-list-card">
             <ul class="ability-list">
@@ -31,14 +24,35 @@ export default (props: {
                                     <div class="ability-name">
                                         {key}
                                     </div>
-                                    <Show when={save !== mod}>
-                                        <small class="save-mod">
-                                            Save: {formatModifier(save)}
-                                        </small>
+                                    <Show when={props.isEditing} fallback={
+                                        <>
+                                            <Show when={save !== mod}>
+                                                <small class="save-mod">
+                                                    Save: {formatModifier(save)}
+                                                </small>
+                                            </Show>
+                                            <div class="mod">
+                                                {formatModifier(mod)}
+                                            </div>
+                                        </>
+                                    }>
+                                        <div class="edit-controls">
+                                            <input 
+                                                type="number" 
+                                                class="scori-input score-input" 
+                                                value={ability.raw}
+                                                onInput={(e) => props.onAbilityChange?.(key as AbilityKey, parseInt(e.currentTarget.value) || 0, !!ability.save_proficiency)}
+                                            />
+                                            <label class="save-prof-toggle">
+                                                <input 
+                                                    type="checkbox" 
+                                                    checked={ability.save_proficiency}
+                                                    onChange={(e) => props.onAbilityChange?.(key as AbilityKey, ability.raw, e.currentTarget.checked)}
+                                                />
+                                                Save
+                                            </label>
+                                        </div>
                                     </Show>
-                                    <div class="mod">
-                                        {formatModifier(mod)}
-                                    </div>
                                 </li>
                             );
                         }

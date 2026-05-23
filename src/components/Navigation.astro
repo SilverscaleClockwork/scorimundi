@@ -1,24 +1,8 @@
 ---
 import '../styles/navigation.scss'
+import NavigationLinks from '../solid/Navigation';
 ---
 
 <nav>
-    <ul>
-        <li>
-            <a href="/">Home</a>
-        </li>
-        <li>
-            <a href="/character/sheet">Sheet</a>
-        </li>
-        <li>
-            <a href="/wiki">Wiki</a>
-        </li>
-        <li class="nav-spacer"></li>
-        <li>
-            <a href="/login">Login</a>
-        </li>
-        <li>
-            <a href="/register">Register</a>
-        </li>
-    </ul>
+    <NavigationLinks client:load />
 </nav>

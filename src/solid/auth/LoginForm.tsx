@@ -1,16 +1,41 @@
 import { createSignal } from 'solid-js';
+import { auth } from '../../lib/auth';
 
-export default () => {
-    const [email, setEmail] = createSignal('');
+const API_URL = import.meta.env.PUBLIC_API_URL || 'http://localhost:3001';
+
+export default (props: { email?: string, registered?: boolean }) => {
+    const [email, setEmail] = createSignal(props.email || '');
     const [password, setPassword] = createSignal('');
-    const [error, setError] = createSignal('');
+    const [error, setError] = createSignal(props.registered ? 'Registration successful! Ignite your session.' : '');
+    const [loading, setLoading] = createSignal(false);
+
+    const [rememberMe, setRememberMe] = createSignal(false);
 
     const handleSubmit = async (e: Event) => {
         e.preventDefault();
         setError('');
+        setLoading(true);
         
-        // This will be handled by the Astro action or API route
-        console.log('Logging in with:', email(), password());
+        try {
+            const response = await fetch(`${API_URL}/auth/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: email(), password: password() }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || 'Login failed');
+            }
+
+            auth.login(data.token, data.user, rememberMe());
+            window.location.href = '/character';
+        } catch (err: any) {
+            setError(err.message);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -24,8 +49,10 @@ export default () => {
                         id="email" 
                         class="scori-input" 
                         placeholder="ash@scorimundi.com"
+                        value={email()}
                         onInput={(e) => setEmail(e.currentTarget.value)}
                         required
+                        disabled={loading()}
                     />
                 </div>
                 <div class="scori-input-group-vertical">
@@ -37,10 +64,25 @@ export default () => {
                         placeholder="••••••••"
                         onInput={(e) => setPassword(e.currentTarget.value)}
                         required
+                        disabled={loading()}
                     />
                 </div>
+                
+                <div class="auth-options">
+                    <label class="checkbox-label">
+                        <input 
+                            type="checkbox" 
+                            onChange={(e) => setRememberMe(e.currentTarget.checked)}
+                        />
+                        <span>Remember Me</span>
+                    </label>
+                    <p class="gdpr-notice">This will store a persistent token on your device.</p>
+                </div>
+
                 {error() && <p class="auth-error">{error()}</p>}
-                <button type="submit" class="scori-btn auth-btn">Login</button>
+                <button type="submit" class="scori-btn auth-btn" disabled={loading()}>
+                    {loading() ? 'Igniting...' : 'Login'}
+                </button>
             </form>
             <p class="auth-link">
                 New to the ashen wastes? <a href="/register">Register here</a>.
