@@ -49,7 +49,8 @@ export default (props: {
     return (
         <div class="log">
             <Show 
-                when={logs()}
+                when={logs().length > 0}
+                fallback={<p class="empty-log">No spins yet. Ignite the fire!</p>}
             >
                 <ul>
                     <For each={logs()}>

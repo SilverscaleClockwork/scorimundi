@@ -1,0 +1,10 @@
+---
+import DefaultLayout from "../layouts/DefaultLayout.astro";
+import RegisterForm from "../solid/auth/RegisterForm";
+---
+
+<DefaultLayout title="Register - Scorimundi">
+    <div class="auth-container">
+        <RegisterForm client:load />
+    </div>
+</DefaultLayout>

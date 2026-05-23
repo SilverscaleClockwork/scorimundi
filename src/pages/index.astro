@@ -4,11 +4,205 @@ import DemoRoller from '../solid/DemoRoller';
 ---
 
 <DefaultLayout>
-	<!-- header -->
-	<header>
-		<h1><span>Scori</span><span style="color: var(--primary-color);">mundi</span></h1>
-		<small>Ashen world reborn from fire.</small>
-	</header>
-	<DemoRoller client:load></DemoRoller>
+    <div class="home-container">
+        <header class="hero">
+            <h1 class="title">
+                <span class="scori">Scori</span><span class="mundi">mundi</span>
+            </h1>
+            <p class="tagline">Ashen world reborn from fire.</p>
+        </header>
+
+        <section class="content">
+            <p class="intro">
+                Experience the next generation of tabletop roleplaying. 
+                Track your characters, roll the dice of destiny, and explore the ashes of a forgotten world.
+            </p>
+            <DemoRoller client:load />
+        </section>
+    </div>
 	<script src="../scripts/mouse-effects.ts"></script>
 </DefaultLayout>
+
+<style lang="scss">
+    .home-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 6rem 2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4rem;
+        min-height: calc(100vh - 80px);
+    }
+
+    .hero {
+        text-align: center;
+        animation: fadeIn 1.5s ease-out;
+
+        .title {
+            font-size: clamp(3rem, 10vw, 6rem);
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 0.4rem;
+            font-weight: 900;
+            line-height: 0.9;
+            filter: drop-shadow(0 0 15px rgba(254, 155, 34, 0.2));
+
+            .scori {
+                color: var(--base-color);
+            }
+
+            .mundi {
+                color: var(--primary-color);
+                position: relative;
+
+                &::after {
+                    content: '';
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 4px;
+                    background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+                }
+            }
+        }
+
+        .tagline {
+            font-size: 1.25rem;
+            color: #aaa;
+            margin-top: 1.5rem;
+            letter-spacing: 0.2rem;
+            font-style: italic;
+            text-transform: lowercase;
+            opacity: 0.8;
+        }
+    }
+
+    .content {
+        width: 100%;
+        max-width: 800px;
+        display: flex;
+        flex-direction: column;
+        gap: 2.5rem;
+        animation: slideUp 1s ease-out 0.5s both;
+
+        .intro {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            text-align: center;
+            color: #ccc;
+            margin-bottom: 1rem;
+            max-width: 600px;
+            margin-inline: auto;
+        }
+
+        .demo {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: start;
+
+            @media (max-width: 800px) {
+                grid-template-columns: 1fr;
+            }
+            
+            .card {
+                margin-top: 0; // Override global.scss margin
+                height: 100%;
+            }
+
+            .empty-log {
+                color: #666;
+                font-style: italic;
+                margin-top: 1rem;
+                text-align: center;
+            }
+
+            .log {
+                ul {
+                    list-style: none;
+                    padding: 0;
+                    margin: 0;
+                    display: flex;
+                    flex-direction: column-reverse;
+                    gap: 0.75rem;
+                }
+
+                .log-item {
+                    background: rgba(0, 0, 0, 0.2);
+                    padding: 0.75rem;
+                    border-radius: 0.5rem;
+                    border-left: 3px solid var(--primary-color);
+                    display: grid;
+                    grid-template-columns: 1fr auto;
+                    align-items: center;
+                    gap: 1rem;
+
+                    & > div:first-child {
+                        font-family: monospace;
+                        color: #aaa;
+                    }
+
+                    & > div:nth-child(2) {
+                        font-weight: bold;
+                        font-size: 1.2rem;
+                        color: var(--color-ember);
+                    }
+
+                    ul {
+                        grid-column: 1 / -1;
+                        display: flex;
+                        flex-direction: row;
+                        flex-wrap: wrap;
+                        gap: 0.5rem;
+                        font-size: 0.8rem;
+                        border-top: 1px solid rgba(255, 255, 255, 0.05);
+                        margin-top: 0.5rem;
+                        padding-top: 0.5rem;
+
+                        li {
+                            background: rgba(255, 255, 255, 0.05);
+                            padding: 0.2rem 0.5rem;
+                            border-radius: 0.25rem;
+                            display: flex;
+                            gap: 0.4rem;
+
+                            & > div:first-child {
+                                color: #888;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @keyframes slideUp {
+        from { 
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to { 
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    // Responsive adjustments
+    @media (max-width: 600px) {
+        .home-container {
+            padding: 3rem 1.5rem;
+            gap: 2.5rem;
+        }
+
+        .hero .title {
+            letter-spacing: 0.2rem;
+        }
+    }
+</style>

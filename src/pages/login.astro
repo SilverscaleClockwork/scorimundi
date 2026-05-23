@@ -1,0 +1,10 @@
+---
+import DefaultLayout from "../layouts/DefaultLayout.astro";
+import LoginForm from "../solid/auth/LoginForm";
+---
+
+<DefaultLayout title="Login - Scorimundi">
+    <div class="auth-container">
+        <LoginForm client:load />
+    </div>
+</DefaultLayout>

@@ -94,6 +94,12 @@ export default (props: {
             </div>
 
             <div class="health-bar-container">
+                <div class="health-compact-text">
+                    {props.health.curr} / {props.health.max}
+                    <Show when={props.health.temp > 0}>
+                        <span class="temp-val"> (+{props.health.temp})</span>
+                    </Show>
+                </div>
                 <div 
                     class="health-bar-fill" 
                     style={{ width: `${currPct()}%` }}

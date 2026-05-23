@@ -1,10 +1,13 @@
-import type { Skill, SkillsStructure } from "@lib/global_types";
+import type { Ability, AbilityKey, Skill, SkillsStructure } from "@lib/global_types";
+import { calculateSkillMod, formatModifier } from "@lib/character_utils";
 import { For } from "solid-js";
 import type { SetStoreFunction } from "solid-js/store";
 
 export default (props: {
     skills: SkillsStructure,
     setSkills: SetStoreFunction<SkillsStructure>,
+    abilities: Record<AbilityKey, Ability>,
+    proficiencyBonus: number,
 }) => {
     const htmlSymb = (skill: Skill) => {
         const proficiency = skill.proficiency ?? 'none';
@@ -25,6 +28,9 @@ export default (props: {
                                     class="skill-view" 
                                 >
                                     {key}
+                                </div>
+                                <div class="skill-mod">
+                                    {formatModifier(calculateSkillMod(key, props.skills, props.abilities, props.proficiencyBonus))}
                                 </div>
                                 <small class="skill-ability">
                                     {skill.ability}
