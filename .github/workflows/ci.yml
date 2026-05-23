@@ -25,6 +25,6 @@ jobs:
         with:
           context: .
           push: true
-          tags: rg.fr-par.scw.cloud/scorimundi-mono/app:latest
+          tags: rg.fr-par.scw.cloud/scorimundi-mono/scorimundi-mono:latest
           cache-from: type=gha
           cache-to: type=inline
