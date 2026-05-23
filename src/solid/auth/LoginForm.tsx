@@ -1,7 +1,6 @@
 import { createSignal } from 'solid-js';
 import { auth } from '../../lib/auth';
-
-const API_URL = import.meta.env.PUBLIC_API_URL || 'http://localhost:3001';
+import { client } from '../../lib/api';
 
 export default (props: { email?: string, registered?: boolean }) => {
     const [email, setEmail] = createSignal(props.email || '');
@@ -15,20 +14,20 @@ export default (props: { email?: string, registered?: boolean }) => {
         e.preventDefault();
         setError('');
         setLoading(true);
-        
+
         try {
-            const response = await fetch(`${API_URL}/auth/login`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email: email(), password: password() }),
+            const res = await client.auth.login.$post({
+                json: { email: email(), password: password() }
             });
 
-            const data = await response.json();
+            const data = await res.json();
 
-            if (!response.ok) {
+            if (!res.ok) {
+                // @ts-ignore
                 throw new Error(data.error || 'Login failed');
             }
 
+            // @ts-ignore
             auth.login(data.token, data.user, rememberMe());
             window.location.href = '/character';
         } catch (err: any) {
@@ -37,7 +36,6 @@ export default (props: { email?: string, registered?: boolean }) => {
             setLoading(false);
         }
     };
-
     return (
         <div class="card auth-card">
             <h2>Ignite your Session</h2>
