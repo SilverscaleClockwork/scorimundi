@@ -2,6 +2,9 @@
   "name": "scorimundi",
   "type": "module",
   "version": "0.0.1",
+  "workspaces": [
+    "api"
+  ],
   "engines": {
     "node": ">=22.12.0"
   },
