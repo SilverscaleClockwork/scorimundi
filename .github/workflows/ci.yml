@@ -18,13 +18,13 @@ jobs:
       - name: Login to Scaleway Container Registry
         shell: bash
         run: |
-          docker login rg.fr-par.scw.cloud -u nologin --password-stdin <<< "${{ secrets.SCALEWAY_SECRET }}"
+          docker login rg.fr-par.scw.cloud/scorimundi-mono -u nologin --password-stdin <<< "${{ secrets.SCALEWAY_SECRET }}"
 
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          tags: rg.fr-par.scw.cloud/scorimundi/scorimundi-mono:latest
+          tags: rg.fr-par.scw.cloud/scorimundi-mono/app:latest
           cache-from: type=gha
           cache-to: type=inline

@@ -8,7 +8,7 @@ import { eq, and } from 'drizzle-orm'
 import { db } from './db/index'
 import { users, characters, characterAbilities, abilities, characterClasses, classes, characterSkills, skills, notes, characterNotes } from './db/schema'
 import 'dotenv/config'
-import pino from 'pino'
+import { pino } from 'pino'
 
 const logger = pino({
   transport: {
