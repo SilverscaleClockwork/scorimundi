@@ -1,0 +1,16 @@
+nav {
+    ul {
+        list-style: none;
+        display: flex;
+        gap: 1rem;
+
+        a {
+            color: var(--base-color);
+            text-decoration: none;
+            padding: 1rem;
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+}

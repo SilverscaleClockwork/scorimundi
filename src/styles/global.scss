@@ -1,0 +1,95 @@
+fieldset {
+    padding: 0;
+    margin: 0;
+}
+
+.card {
+    position: relative;
+    margin-top: 1rem;
+    padding: 1rem;
+    border: none;
+    background-color: #333;
+    border-radius: 1rem;
+    corner-shape: squircle;
+
+    &::before{
+        content: '';
+        display: block;
+        position: absolute;
+        inset: -2px;
+        border-radius: 1rem;
+        background: radial-gradient(
+            100px circle at var(--mouse-x) var(--mouse-y), 
+            var(--primary-color),
+            var(--border-color) 100%
+        );
+        z-index: -1;
+    }
+}
+
+
+// inputs
+
+/* Container to align the input and button perfectly */
+.scori-input-group {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+/* The Text Input */
+.scori-input {
+    background-color: var(--color-nocturne); /* Deepest color for depth */
+    color: var(--base-color);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 0.6rem 1rem;
+    font-family: inherit;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
+    max-width: 300px;
+}
+
+/* The 'Ignite' Focus State */
+.scori-input:focus {
+    border-color: var(--color-flare);
+    /* Creates a soft fiery glow around the input */
+    box-shadow: 0 0 10px rgba(254, 155, 34, 0.3); 
+}
+
+.scori-input::placeholder {
+    color: #888; /* Keeps the placeholder distinct from actual text */
+    opacity: 0.7;
+}
+
+/* The Primary Button (e.g., your "SPIN!" button) */
+.scori-btn {
+    background-color: var(--color-flare);
+    color: var(--color-nocturne); /* High contrast dark text on bright orange */
+    border: 1px solid var(--color-flare);
+    border-radius: 4px;
+    padding: 0.6rem 1.2rem;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* Button Hover State - Heats up to Ember */
+.scori-btn:hover {
+    background-color: var(--color-ember);
+    border-color: var(--color-ember);
+    box-shadow: 0 0 15px rgba(255, 211, 97, 0.4);
+    transform: translateY(-1px);
+}
+
+/* Button Active State - Physical click feel */
+.scori-btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 0 5px rgba(255, 211, 97, 0.4);
+}

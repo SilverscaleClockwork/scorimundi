@@ -1,0 +1,75 @@
+---
+import { getCollection } from 'astro:content';
+import DefaultLayout from '../../layouts/DefaultLayout.astro';
+
+const wikiEntries = await getCollection('wiki');
+---
+
+<DefaultLayout>
+  <div class="wiki-index">
+    <h1>Wiki</h1>
+    <ul>
+      {wikiEntries.map(entry => (
+        <li>
+          <a href={`/wiki/${entry.id}`}>
+            <h2>{entry.data.title}</h2>
+            <p>{entry.data.description}</p>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</DefaultLayout>
+
+<style lang="scss">
+  .wiki-index {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+
+    h1 {
+      font-family: 'Cinzel', serif;
+      color: var(--color-flare);
+      border-bottom: 2px solid var(--color-flare);
+      padding-bottom: 0.5rem;
+      margin-bottom: 2rem;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      margin-bottom: 1.5rem;
+      
+      a {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+        padding: 1rem;
+        background: var(--color-nocturne);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        transition: transform 0.2s ease, border-color 0.2s ease;
+
+        &:hover {
+          transform: translateY(-2px);
+          border-color: var(--color-flare);
+        }
+
+        h2 {
+          margin: 0;
+          color: var(--color-flare);
+          font-size: 1.25rem;
+        }
+
+        p {
+          margin: 0.5rem 0 0;
+          opacity: 0.8;
+          font-size: 0.9rem;
+        }
+      }
+    }
+  }
+</style>
