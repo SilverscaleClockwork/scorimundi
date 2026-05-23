@@ -1,0 +1,207 @@
+.health-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    min-height: 8rem; // Prevent vertical jump
+    overflow: hidden;
+
+    &.is-loading {
+        &, *, *::before, *::after {
+            transition: none !important;
+            animation: none !important;
+        }
+    }
+
+    .health-stats {
+        display: flex;
+        align-items: flex-end;
+        white-space: nowrap;
+        height: 3.5rem;
+        
+        .stat-item {
+            flex: 0 0 4.2rem; // Do not grow, do not shrink, stay exactly this wide
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            
+            label {
+                font-size: 0.65rem;
+                text-transform: uppercase;
+                opacity: 0.6;
+                letter-spacing: 0.05em;
+                line-height: 1;
+                margin-bottom: 0.4rem;
+            }
+
+            .editable-value {
+                font-size: 1.6rem;
+                font-weight: 800;
+                height: 2.2rem;
+                line-height: 2.2rem;
+                border-radius: 6px;
+                width: 100%;
+                text-align: center;
+                outline: none;
+                cursor: text;
+                background: var(--color-nocturne);
+                border: 1px solid var(--border-color);
+                
+                // Ensure text rendering is stable
+                font-family: inherit;
+                -webkit-font-smoothing: antialiased;
+                
+                transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+                
+                &:hover {
+                    border-color: var(--color-twilight);
+                    transform: translateY(-1px);
+                }
+                
+                &:focus {
+                    border-color: var(--color-flare);
+                    box-shadow: 0 0 12px rgba(254, 155, 34, 0.2);
+                    transform: translateY(0);
+                }
+            }
+        }
+
+        .stat-divider {
+            flex: 0 0 1.2rem;
+            text-align: center;
+            font-size: 1.2rem;
+            opacity: 0.3;
+            padding-bottom: 0.5rem;
+        }
+
+        .temp-hp-stat {
+            margin-left: auto;
+            color: var(--color-ember);
+        }
+    }
+
+    .health-bar-container {
+        position: relative;
+        height: 1.5rem;
+        flex: 0 0 1.5rem; // Lock height
+        background: var(--color-nocturne);
+        border-radius: 0.5rem;
+        overflow: hidden;
+        border: 1px solid var(--border-color);
+
+        .health-bar-fill {
+            width: 0;
+            height: 100%;
+            background: linear-gradient(90deg, var(--color-infero), var(--color-blaze));
+            transition: width 0.3s ease-out;
+            position: relative;
+            z-index: 2;
+        }
+
+        .health-bar-temp {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: var(--color-ember);
+            opacity: 0.5;
+            transition: width 0.3s ease-out;
+            z-index: 1;
+            animation: pulse-temp 2s infinite ease-in-out;
+        }
+    }
+}
+
+@keyframes pulse-temp {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.6; }
+}
+
+.ability-list-card {
+
+    .ability-list {
+        display: flex;
+        list-style: none;
+        justify-content: space-between;
+        padding: 0;
+        margin: 0;
+        gap: 1rem;
+        li {
+            .ability-name {
+                font-size: smaller;
+            }
+    
+            .mod {
+                font-size: x-large;
+            }
+    
+            width: 100%;
+            max-width: 8rem;
+            height: 5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+
+            &:hover{
+                scale: 1.1;
+            }
+        }
+    }
+}
+
+.skill-list {
+    column-count: 2;
+    column-gap: 2rem;
+    list-style-position: inside;
+    padding: 0;
+    list-style: none;
+
+    .skill-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.3rem;
+        cursor: pointer;
+
+        &:hover {
+            scale: 1.01;
+        }
+        
+        .skill-view {
+            flex-grow: 1;
+        }
+
+        .skill-ability {
+            opacity: 0.7;
+            font-size: 0.8em;
+            &:before{
+                content: '(';
+            }
+            &:after{
+                content: ')';
+            }
+        }
+    }
+}
+
+.proficiency-indicator {
+    display: block;
+    height: 0.7rem;
+    width: 0.7rem;
+    border-radius: 50%;
+    border: 1px solid var(--border-color);
+    flex-shrink: 0;
+
+    &[data-value="proficient"]{
+        background: var(--color-ember);
+    }
+    &[data-value="expertise"]{
+        background: var(--color-flare);
+        box-shadow: 0 0 5px var(--color-flare);
+    }
+    &[data-value="none"]{
+        background: transparent;
+    }
+}

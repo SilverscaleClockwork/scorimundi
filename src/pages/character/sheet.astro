@@ -1,9 +1,10 @@
 ---
 import DefaultLayout from "../../layouts/DefaultLayout.astro";
 import CharacterSheet from '@/solid/character/Sheet';
+import '@/styles/sheet.scss';
 ---
 
 <DefaultLayout>
-    <CharacterSheet></CharacterSheet>
+    <CharacterSheet client:load></CharacterSheet>
 	<script src="@/scripts/mouse-effects.ts"></script>
 </DefaultLayout>

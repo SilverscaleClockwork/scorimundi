@@ -6,22 +6,33 @@ export default (props: {
     abilities: Record<AbilityKey, Ability>,
     setAbilities: SetStoreFunction<Record<AbilityKey, Ability>>,
 }) => {
+    const headings: Record<AbilityKey, string> = {
+        str: 'Strength',
+        dex: 'Dexterity',
+        con: 'Constitution',
+        int: 'Intelligence',
+        wis: 'Wisdom',
+        cha: 'Charisma',
+    };
+
     return (
-        <ul class="card">
-            <For each={Object.entries(props.abilities)}>
-                {
-                    ([key, ability]) => (
-                        <li>
-                            <div>
-                                {key}
-                            </div>
-                            <div>
-                                {ability.mod}
-                            </div>
-                        </li>
-                    )
-                }
-            </For>
-        </ul>
+        <div class="card ability-list-card">
+            <ul class="ability-list">
+                <For each={Object.entries(props.abilities)}>
+                    {
+                        ([key, ability]) => (
+                            <li>
+                                <div class="ability-name">
+                                    {key}
+                                </div>
+                                <div class="mod">
+                                    {ability.mod}
+                                </div>
+                            </li>
+                        )
+                    }
+                </For>
+            </ul>
+        </div>
     );
 }
