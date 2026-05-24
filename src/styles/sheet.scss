@@ -7,6 +7,11 @@
     gap: 1.5rem;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
+    @media (max-width: 600px) {
+        padding: 1rem;
+        gap: 1rem;
+    }
+
     &.status-msg {
         text-align: center;
         padding-top: 10rem;
@@ -87,10 +92,28 @@
     margin-bottom: 0.5rem;
     transition: all 0.4s ease;
 
+    @media (max-width: 600px) {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+        padding-bottom: 1rem;
+    }
+
     .header-actions {
         display: flex;
         align-items: center;
         gap: 1.5rem;
+
+        @media (max-width: 600px) {
+            width: 100%;
+            justify-content: space-between;
+            gap: 1rem;
+
+            .scori-btn.btn-small {
+                padding: 0.2rem 0.6rem;
+                font-size: 0.7rem;
+            }
+        }
 
         .global-save-indicator {
             font-size: 0.7rem;
@@ -110,6 +133,10 @@
             letter-spacing: -0.02em;
             color: var(--base-color);
             transition: all 0.4s ease;
+
+            @media (max-width: 600px) {
+                font-size: 2rem;
+            }
         }
 
         .char-meta {
@@ -118,6 +145,12 @@
             gap: 1rem;
             margin-top: 0.5rem;
             transition: all 0.4s ease;
+
+            @media (max-width: 600px) {
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+
 
             .char-race {
                 text-transform: uppercase;
@@ -213,6 +246,11 @@
         padding-bottom: 0.2rem;
         transition: all 0.4s ease;
 
+        @media (max-width: 600px) {
+            text-align: left;
+            padding-bottom: 0;
+        }
+
         label {
             font-size: 0.7rem;
             text-transform: uppercase;
@@ -221,6 +259,10 @@
             font-weight: 700;
             margin-bottom: -0.2rem;
             opacity: 0.8;
+            
+            @media (max-width: 600px) {
+                font-size: 0.6rem;
+            }
         }
 
         .value {
@@ -230,6 +272,10 @@
             color: var(--base-color);
             filter: drop-shadow(0 0 10px rgba(255, 211, 97, 0.2));
             transition: all 0.4s ease;
+
+            @media (max-width: 600px) {
+                font-size: 1.8rem;
+            }
             
             &::before {
                 content: 'PB';
@@ -238,6 +284,10 @@
                 margin-right: 0.4rem;
                 opacity: 0.4;
                 font-weight: 400;
+
+                @media (max-width: 600px) {
+                    font-size: 0.7rem;
+                }
             }
         }
     }

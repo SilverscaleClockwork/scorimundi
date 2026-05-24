@@ -20,7 +20,15 @@ export default (props: { email?: string, registered?: boolean }) => {
                 json: { email: email(), password: password() }
             });
 
-            const data = await res.json();
+            const contentType = res.headers.get('content-type');
+            let data: any;
+
+            if (contentType && contentType.includes('application/json')) {
+                data = await res.json();
+            } else {
+                const text = await res.text();
+                throw new Error(`Server returned non-JSON response (${res.status}): ${text.slice(0, 100)}`);
+            }
 
             if (!res.ok) {
                 // @ts-ignore
