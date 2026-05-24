@@ -10,6 +10,7 @@ export default (props: {
     proficiencyBonus: number,
     isEditing?: boolean,
     onSkillChange?: (key: string, level: string) => void,
+    onRoll?: (name: string, mod: number) => void,
 }) => {
     const proficiencyLevels = ['none', 'proficient', 'expertise'];
 
@@ -37,9 +38,10 @@ export default (props: {
                     {
                         ([key, skill]) => {
                             const proficiency = () => skill.proficiency ?? 'none';
+                            const mod = () => calculateMod(key, skill.ability, proficiency());
                             
                             return (
-                                <li class="skill-item">
+                                <li class="skill-item" onClick={() => !props.isEditing && props.onRoll?.(key.replace(/_/g, ' '), mod())}>
                                     <Show when={props.isEditing} fallback={
                                         <span class="proficiency-indicator" data-value={proficiency()}></span>
                                     }>

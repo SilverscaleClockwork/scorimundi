@@ -6,13 +6,12 @@ export default (props: {
 }) => {
     const logs = props.logs;
 
-
     function printRoll(log: RollResult) {
-        if(log.success == false) {
+        if(log.success === false) {
             return (
                 <li>
                     <div class="warn">
-                        Roll failed!
+                        Invalid roll syntax. Please refer to <a href="/wiki/dice-roller" class="guide-link">the guide</a>.
                     </div>
                 </li>
             );
@@ -20,23 +19,25 @@ export default (props: {
 
         return (
             <li class="log-item">
-                <div>
-                    {log.original}
+                <div class="log-header">
+                    <span class="original-roll">
+                        {log.original}
+                    </span>
+                    <span class="total-value">
+                        {log.total}
+                    </span>
                 </div>
-                <div>
-                    {log.total}
-                </div>
-                <ul>
+                <ul class="breakdown-list">
                     <For each={log.breakdown}>
                         {
                             breakdown => (
-                                <li>
-                                    <div>
+                                <li class="breakdown-item">
+                                    <span class="dice-type">
                                         {breakdown.dice}
-                                    </div>
-                                    <div>
-                                        {breakdown.results.join(', ')}
-                                    </div>
+                                    </span>
+                                    <span class="individual-results">
+                                        [{breakdown.results.join(', ')}]
+                                    </span>
                                 </li>
                             )
                         }
