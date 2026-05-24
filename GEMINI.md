@@ -18,7 +18,8 @@
 - **Responsive:** Ensure the character sheet and heroes hub remain functional on mobile.
 
 ## Development Workflow
-- **Unified Dev:** Use `npm run dev` from the root to start both Astro and the Hono API.
+- **Dev Environment:** Always assume a development instance (both Astro and the Hono API) is already running on the standard ports (4321 and 3001). DO NOT attempt to start, stop, or restart the development servers unless specifically instructed.
+- **Unified Dev:** Use `npm run dev` from the root to start both Astro and the Hono API if a fresh start is required.
 - **Migrations:** Always use `npm run db:generate` and `npm run db:migrate` within the `/api` folder for schema changes.
 
 ## References

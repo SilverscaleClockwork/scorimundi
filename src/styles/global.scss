@@ -1,5 +1,5 @@
-@import 'auth.scss';
-@import 'character-list.scss';
+@use 'auth.scss';
+@use 'character-list.scss';
 
 * {
     box-sizing: border-box;
@@ -103,4 +103,21 @@ fieldset {
 .scori-btn:active {
     transform: translateY(1px);
     box-shadow: 0 0 5px rgba(255, 211, 97, 0.4);
+}
+
+.scori-btn.btn-small {
+    padding: 0.3rem 0.8rem;
+    font-size: 0.8rem;
+}
+
+.scori-btn.btn-secondary {
+    background-color: var(--color-ash);
+    border-color: var(--color-ash);
+    color: var(--base-color);
+
+    &:hover {
+        background-color: #4a4f50;
+        border-color: #4a4f50;
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    }
 }

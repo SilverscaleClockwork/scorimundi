@@ -3,6 +3,7 @@ import { auth } from "../lib/auth";
 
 export default () => {
     const [isHydrated, setIsHydrated] = createSignal(false);
+    const [isOpen, setIsOpen] = createSignal(false);
 
     onMount(() => {
         setIsHydrated(true);
@@ -13,39 +14,42 @@ export default () => {
         window.location.href = '/';
     };
 
-    return (
-        <ul>
-            <li>
-                <a href="/">Home</a>
-            </li>
-            <Show when={isHydrated() && auth.token()}>
-                <li>
-                    <a href="/character">Heroes</a>
-                </li>
-            </Show>
-            <li>
-                <a href="/wiki">Wiki</a>
-            </li>
-            
-            <li class="nav-spacer"></li>
+    const toggleMenu = () => setIsOpen(!isOpen());
 
-            <Show when={isHydrated() && auth.token()} fallback={
-                <>
-                    <li>
-                        <a href="/login">Login</a>
-                    </li>
-                    <li>
-                        <a href="/register">Register</a>
-                    </li>
-                </>
-            }>
-                <li class="user-display">
-                    <span class="username">{auth.user()?.username}</span>
+    return (
+        <div class="nav-container">
+            <div class="nav-header">
+                <a href="/" class="nav-brand">Scorimundi</a>
+                <button class="mobile-nav-toggle" onClick={toggleMenu} aria-label="Toggle Menu">
+                    <span class="toggle-icon">{isOpen() ? '×' : '☰'}</span>
+                </button>
+            </div>
+            
+            <ul class={isOpen() ? 'show' : 'hide'}>
+                <li class="nav-links-group">
+                    <a href="/">Home</a>
+                    <Show when={isHydrated() && auth.token()}>
+                        <a href="/character">Heroes</a>
+                    </Show>
+                    <a href="/wiki">Wiki</a>
                 </li>
-                <li>
-                    <button class="nav-btn-logout" onClick={handleLogout}>Logout</button>
+                
+                <li class="nav-spacer"></li>
+
+                <li class="nav-auth-group">
+                    <Show when={isHydrated() && auth.token()} fallback={
+                        <>
+                            <a href="/login">Login</a>
+                            <a href="/register">Register</a>
+                        </>
+                    }>
+                        <div class="user-display">
+                            <span class="username">{auth.user()?.username}</span>
+                        </div>
+                        <button class="nav-btn-logout" onClick={handleLogout}>Logout</button>
+                    </Show>
                 </li>
-            </Show>
-        </ul>
+            </ul>
+        </div>
     );
 };

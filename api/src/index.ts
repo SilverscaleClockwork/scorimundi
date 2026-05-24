@@ -35,11 +35,21 @@ if (BUNNY_SECRET) {
         method: c.req.method,
         ip: c.req.header('x-forwarded-for') 
       }, 'Global access denied: Invalid or missing X-Bunny-Secret header')
-      return c.text('Forbidden: Direct access is restricted', 403)
+      return c.json({ error: 'Forbidden', details: 'Direct access is restricted' }, 403)
     }
     await next()
   })
 }
+
+// Global app error handler to ensure JSON even for non-api routes
+app.onError((err, c) => {
+  logger.error(err, 'Global App Error')
+  return c.json({ error: 'Internal Server Error', details: err.message }, 500)
+})
+
+app.notFound((c) => {
+  return c.json({ error: 'Not Found', path: c.req.path }, 404)
+})
 
 // --- Middleware ---
 api.use('*', async (c, next) => {
@@ -97,7 +107,16 @@ api.post('/auth/register', async (c) => {
   } catch (err: any) {
     logger.error(err, 'Registration Error')
     
-    if (err.message && err.message.includes('UNIQUE constraint failed')) {
+    const errMsg = (err.message || '').toLowerCase()
+    const errCode = String(err.code || '').toLowerCase()
+    
+    if (
+        errMsg.includes('unique') || 
+        errMsg.includes('constraint') ||
+        errCode.includes('unique') ||
+        errCode.includes('constraint') ||
+        errCode === '2067'
+    ) {
         return c.json({ error: 'Username or email already exists' }, 409)
     }
     throw err
@@ -263,6 +282,43 @@ api.patch('/characters/:id', jwt({ secret: JWT_SECRET, alg: 'HS256' }), async (c
     } catch (err: any) {
       logger.error(err, 'Update Character Error')
       throw err
+    }
+})
+
+api.delete('/characters/:id', jwt({ secret: JWT_SECRET, alg: 'HS256' }), async (c) => {
+    try {
+        const payload = c.get('jwtPayload') as any
+        const userId = Number(payload.sub)
+        const charId = c.req.param('id')
+
+        logger.info({ charId, userId }, 'DELETE /characters/:id - Received deletion request');
+
+        // Verify character ownership
+        const [char] = await db.select().from(characters).where(and(eq(characters.id, charId), eq(characters.userId, userId))).limit(1)
+        if (!char) {
+            logger.warn({ charId, userId }, 'Unauthorized character deletion attempt');
+            return c.json({ error: 'Not authorized or character not found' }, 403)
+        }
+
+        // Notes cleanup: Find notes linked to this character
+        const linkedNotes = await db.select().from(characterNotes).where(eq(characterNotes.characterId, charId))
+        
+        // Delete the character (cascades will handle characterClasses, characterAbilities, characterSkills, characterNotes)
+        await db.delete(characters).where(and(eq(characters.id, charId), eq(characters.userId, userId)))
+
+        // Optional: Cleanup orphaned notes
+        for (const ln of linkedNotes) {
+            const otherUsage = await db.select().from(characterNotes).where(eq(characterNotes.noteId, ln.noteId))
+            if (otherUsage.length === 0) {
+                await db.delete(notes).where(eq(notes.id, ln.noteId))
+            }
+        }
+
+        logger.info({ charId }, 'Character deleted successfully');
+        return c.json({ success: true })
+    } catch (err: any) {
+        logger.error(err, 'Delete Character Error')
+        throw err
     }
 })
 

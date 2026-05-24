@@ -13,6 +13,7 @@ export default () => {
     ];
     const [newName, setNewName] = createSignal('');
     const [newRace, setNewRace] = createSignal(handledRaces[0]);
+    const [deletingId, setDeletingId] = createSignal<string | null>(null);
 
     const fetchCharacters = async () => {
         if (!auth.token()) {
@@ -56,6 +57,30 @@ export default () => {
             }
         } catch (err) {
             setError('Failed to create character');
+        }
+    };
+
+    const handleDelete = async (id: string) => {
+        if (!confirm('Are you sure you want to return this hero to the ashes? This cannot be undone.')) return;
+        
+        setDeletingId(id);
+        setError('');
+        try {
+            const res = await client.characters[":id"].$delete({
+                param: { id },
+                header: { 'Authorization': `Bearer ${auth.token()}` }
+            });
+            
+            if (res.ok) {
+                setCharacters(characters().filter(c => c.id !== id));
+            } else {
+                const data = await res.json() as any;
+                setError(data.error || 'Failed to delete character');
+            }
+        } catch (err) {
+            setError('Connection error');
+        } finally {
+            setDeletingId(null);
         }
     };
 
@@ -125,16 +150,32 @@ export default () => {
 
                 <For each={characters()}>
                     {(char) => (
-                        <a href={`/character/sheet?id=${char.id}`} class="card character-card-link">
-                            <div class="char-header">
-                                <h3>{char.name}</h3>
-                                <span class="char-race-tag">{char.race}</span>
-                            </div>
-                            <div class="char-hp-summary">
-                                <label>HP</label>
-                                <span>{char.hpCurr} / {char.hpMax}</span>
-                            </div>
-                        </a>
+                        <div class="character-card-wrapper">
+                            <a href={`/character/sheet?id=${char.id}`} class="card character-card-link">
+                                <div class="char-header">
+                                    <h3>{char.name}</h3>
+                                    <span class="char-race-tag">{char.race}</span>
+                                </div>
+                                <div class="char-hp-summary">
+                                    <label>HP</label>
+                                    <span>{char.hpCurr} / {char.hpMax}</span>
+                                </div>
+                            </a>
+                            <button 
+                                class="delete-char-btn" 
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    handleDelete(char.id);
+                                }}
+                                disabled={deletingId() === char.id}
+                                title="Delete Hero"
+                            >
+                                <Show when={deletingId() === char.id} fallback="×">
+                                    ...
+                                </Show>
+                            </button>
+                        </div>
                     )}
                 </For>
             </div>
