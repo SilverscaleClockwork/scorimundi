@@ -9,6 +9,7 @@ export default (props: {
     proficiencyBonus: number,
     isEditing?: boolean,
     onAbilityChange?: (key: AbilityKey, score: number, save: boolean) => void,
+    onRoll?: (name: string, mod: number) => void,
 }) => {
     return (
         <div class="card ability-list-card">
@@ -20,7 +21,7 @@ export default (props: {
                             const save = mod + (ability.save_proficiency ? props.proficiencyBonus : 0);
 
                             return (
-                                <li>
+                                <li onClick={() => !props.isEditing && props.onRoll?.(key, mod)}>
                                     <div class="ability-name">
                                         {key}
                                     </div>

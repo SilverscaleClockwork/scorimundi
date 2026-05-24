@@ -104,6 +104,38 @@
         align-items: center;
         gap: 1.5rem;
 
+        .roll-mode-selector {
+            display: flex;
+            background: var(--color-nocturne);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 2px;
+            gap: 2px;
+
+            .mode-btn {
+                background: none;
+                border: none;
+                color: #666;
+                font-size: 0.65rem;
+                font-weight: 800;
+                padding: 0.4rem 0.8rem;
+                cursor: pointer;
+                border-radius: 2px;
+                transition: all 0.2s ease;
+
+                &:hover {
+                    color: #999;
+                }
+
+                &.active {
+                    color: var(--color-nocturne);
+                    &.dis { background: var(--color-blaze); }
+                    &.norm { background: var(--color-ash); color: var(--base-color); }
+                    &.adv { background: var(--color-flare); }
+                }
+            }
+        }
+
         @media (max-width: 600px) {
             width: 100%;
             justify-content: space-between;

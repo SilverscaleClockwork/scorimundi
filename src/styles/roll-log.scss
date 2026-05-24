@@ -1,0 +1,119 @@
+.log {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding-top: 0.5rem;
+
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column-reverse; // Newest at top
+        gap: 0.75rem;
+    }
+}
+
+.log-item {
+    background-color: var(--color-nocturne);
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+    animation: slide-in 0.3s ease-out;
+
+    &:hover {
+        border-color: var(--color-flare);
+        transform: translateX(4px);
+    }
+
+    .log-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .original-roll {
+        font-size: 0.85rem;
+        color: #aaa;
+        font-style: italic;
+        font-family: 'Courier New', Courier, monospace;
+    }
+
+    .total-value {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: var(--color-flare);
+        text-shadow: 0 0 10px rgba(254, 155, 34, 0.4);
+    }
+
+    .breakdown-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        font-size: 0.8rem;
+    }
+
+    .breakdown-item {
+        background-color: var(--color-ash);
+        padding: 0.2rem 0.5rem;
+        border-radius: 4px;
+        display: flex;
+        gap: 0.4rem;
+        align-items: center;
+        border: 1px solid rgba(255,255,255,0.05);
+
+        .dice-type {
+            font-weight: 700;
+            color: var(--color-ember);
+        }
+
+        .individual-results {
+            color: var(--base-color);
+            opacity: 0.9;
+        }
+    }
+}
+
+.empty-log {
+    text-align: center;
+    color: #888;
+    padding: 2rem;
+    font-style: italic;
+}
+
+.warn {
+    color: var(--color-blaze);
+    font-weight: 700;
+    padding: 0.75rem;
+    border: 1px dashed var(--color-blaze);
+    border-radius: 0.5rem;
+    background-color: rgba(159, 26, 24, 0.1);
+
+    .guide-link {
+        color: var(--color-ember);
+        text-decoration: underline;
+        transition: color 0.2s ease;
+
+        &:hover {
+            color: var(--color-flare);
+        }
+    }
+}
+
+@keyframes slide-in {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

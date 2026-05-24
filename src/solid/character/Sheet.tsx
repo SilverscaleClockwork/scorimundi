@@ -10,6 +10,10 @@ import Healthbar from "./healthbar";
 import AbilityCard from "./AbilityCard";
 import SkillListCard from "./SkillListCard";
 import NotesCard from "./NotesCard";
+import MinifiedLog from "./MinifiedLog";
+import RollResultModal from "./RollResultModal";
+import { type RollModifier, evaluateRoll, type RollResult } from "@lib/roller";
+import "@/styles/minified-tools.scss";
 
 
 export default () => {
@@ -20,6 +24,43 @@ export default () => {
     const [error, setError] = createSignal('');
     const [isEditing, setIsEditing] = createSignal(false);
     const [isSaving, setIsSaving] = createSignal(false);
+
+    const [rollMode, setRollMode] = createSignal<RollModifier>('normal');
+    const [logs, setLogs] = createStore<RollResult[]>([]);
+    const [recentRoll, setRecentRoll] = createSignal<RollResult | null>(null);
+
+    const handleRoll = (name: string, mod: number) => {
+        const sign = mod >= 0 ? '+' : '';
+        const notation = `1d20v ${sign} ${mod}`;
+        const result = evaluateRoll(notation, rollMode());
+        
+        // Add name to original for the log
+        if (result.success) {
+            result.original = `${name}: ${result.original}`;
+        }
+
+        setRecentRoll(result);
+
+        setLogs(produce(state => {
+            state.push(result);
+            if (state.length > 20) state.shift();
+        }));
+    };
+
+    const handleManualRoll = (notation: string) => {
+        const result = evaluateRoll(notation, rollMode());
+        
+        if (result.success) {
+            result.original = `Manual: ${result.original}`;
+        }
+
+        setRecentRoll(result);
+
+        setLogs(produce(state => {
+            state.push(result);
+            if (state.length > 20) state.shift();
+        }));
+    };
 
     const [abilities, setAbilities] = createStore<Record<AbilityKey, Ability>>({
         str: { raw: 10, mod: 0 },
@@ -331,6 +372,32 @@ export default () => {
                             <Show when={isSaving()}>
                                 <span class="global-save-indicator">Syncing...</span>
                             </Show>
+                            <div class="roll-mode-selector">
+                                <button 
+                                    class="mode-btn dis" 
+                                    classList={{ active: rollMode() === 'dis' }}
+                                    onClick={() => setRollMode('dis')}
+                                    title="Disadvantage"
+                                >
+                                    DIS
+                                </button>
+                                <button 
+                                    class="mode-btn norm" 
+                                    classList={{ active: rollMode() === 'normal' }}
+                                    onClick={() => setRollMode('normal')}
+                                    title="Normal Roll"
+                                >
+                                    NORM
+                                </button>
+                                <button 
+                                    class="mode-btn adv" 
+                                    classList={{ active: rollMode() === 'adv' }}
+                                    onClick={() => setRollMode('adv')}
+                                    title="Advantage"
+                                >
+                                    ADV
+                                </button>
+                            </div>
                             <button 
                                 class="scori-btn btn-small" 
                                 classList={{ 'btn-secondary': isEditing() }}
@@ -355,6 +422,7 @@ export default () => {
                                 proficiencyBonus={proficiencyBonus()}
                                 isEditing={isEditing()}
                                 onAbilityChange={handleAbilityChange}
+                                onRoll={handleRoll}
                             />
                         </aside>
 
@@ -385,6 +453,7 @@ export default () => {
                                         proficiencyBonus={proficiencyBonus()}
                                         isEditing={isEditing()}
                                         onSkillChange={handleSkillChange}
+                                        onRoll={handleRoll}
                                     />
                                 </Show>
                                 <Show when={activeTab() === 'notes'}>
@@ -394,6 +463,12 @@ export default () => {
                         </main>
                     </div>
                 </div>
+                <MinifiedLog logs={() => logs} onManualRoll={handleManualRoll} />
+                <RollResultModal 
+                    result={recentRoll()} 
+                    onClose={() => setRecentRoll(null)} 
+                    duration={1500} 
+                />
             </Show>
         </Show>
     );
