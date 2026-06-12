@@ -1,0 +1,56 @@
+---
+import DefaultLayout from '../layouts/DefaultLayout.astro';
+---
+
+<DefaultLayout title="Legal Notice (Imprint)">
+    <div class="impressum-page">
+        <h1>Legal Notice (Imprint)</h1>
+
+        <h2>Information according to § 5 DDG (German Digital Services Act)</h2>
+
+        <address>
+            Tobias Andreas Köpke<br />
+            c/o Impressumsservice Dein-Impressum<br />
+            Stettiner Straße 41<br />
+            35410 Hungen<br />
+            Germany
+        </address>
+
+        <h2>Contact</h2>
+
+        <address>
+            Email: <a href="mailto:scorimundi@hiddendoma.in">scorimundi@hiddendoma.in</a><br />
+            Phone: <a href="tel:+4924075069517">+49 2407 5069517</a>
+        </address>
+    </div>
+</DefaultLayout>
+
+<style lang="scss">
+    .impressum-page {
+        max-width: 760px;
+        margin: 0 auto;
+        padding: 5rem 2rem;
+
+        h1 {
+            margin-bottom: 2rem;
+            color: var(--base-color);
+            font-size: clamp(2.25rem, 6vw, 4rem);
+            text-transform: uppercase;
+            letter-spacing: 0.15rem;
+        }
+
+        h2 {
+            margin-bottom: 1.25rem;
+            color: var(--primary-color);
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        address {
+            font-style: normal;
+            line-height: 1.8;
+            color: var(--base-color);
+            font-size: 1.1rem;
+        }
+    }
+</style>

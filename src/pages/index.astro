@@ -19,6 +19,10 @@ import DemoRoller from '../solid/DemoRoller';
             </p>
             <DemoRoller client:load />
         </section>
+
+        <footer class="home-footer">
+            <a href="/impressum">Impressum</a>
+        </footer>
     </div>
 	<script src="../scripts/mouse-effects.ts"></script>
 </DefaultLayout>
@@ -174,6 +178,23 @@ import DemoRoller from '../solid/DemoRoller';
                         }
                     }
                 }
+            }
+        }
+    }
+
+    .home-footer {
+        margin-top: auto;
+        text-align: center;
+
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 0.9rem;
+            letter-spacing: 0.1rem;
+
+            &:hover {
+                color: var(--base-color);
+                text-decoration: underline;
             }
         }
     }

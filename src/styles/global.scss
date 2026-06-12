@@ -10,6 +10,15 @@ body {
     font-variant-numeric: tabular-nums;
 }
 
+a {
+    color: var(--color-ember);
+    text-decoration: none;
+
+    &:hover {
+        color: #ffe89a;
+    }
+}
+
 fieldset {
     padding: 0;
     margin: 0;
